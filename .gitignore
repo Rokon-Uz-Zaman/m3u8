@@ -15,5 +15,4 @@ venv/
 
 media/uploads
 
-#coverage
 .coverage

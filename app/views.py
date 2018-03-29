@@ -118,3 +118,8 @@ class CreatePlaylist(CreateView):
 
 class IndexView(TemplateView):
     template_name = 'app/index.html'
+
+
+@method_decorator(login_required, name='dispatch')
+class ReactIndexView(TemplateView):
+    template_name = 'app/react.html'

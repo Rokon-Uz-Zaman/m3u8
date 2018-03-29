@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'social_django',
+    'webpack_loader',
 
     'app.apps.AppConfig',
 ]
@@ -144,6 +145,19 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'bundles/',  # must end with slash
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'frontend', 'assets'),
+)
 
 try:
     from playlist.local import *  # noqa
