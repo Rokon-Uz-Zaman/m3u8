@@ -1,0 +1,16 @@
+{% load staticfiles %}
+
+
+<div class="text-center">
+
+  <hr/>
+
+  <ul class="list-inline">
+
+    <li class="list-inline-item" style="position: relative; top: 6px; font: 32px Lucida Grande; margin:20px"><a style="color: black; text-decoration: none;" href="http://www.api.org/">API</a></li>
+    <li class="list-inline-item" style="margin:20px"><a href="https://github.com/inoks/m3u8" target="_blank"><img src="{% static 'app/images/github.png' %}" width="120px" height="60px" alt="Github"/> </a></li>
+    <li class="list-inline-item" style="margin:20px"><a href="{% url 'index' %}"><img src="{% static 'app/images/home.svg' %}" width="100px" height="60px" alt="Go to main page"/> </a></li>
+    <li class="list-inline-item" style="font: 16px Lucida Grande; margin:20px><i style="font-size: 12px;">by Sergey (inoks)</i></li>
+
+  </ul>
+</div>
