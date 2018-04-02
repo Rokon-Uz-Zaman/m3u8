@@ -1,7 +1,8 @@
 import {combineReducers} from 'redux';
 import {
   REQUEST_PLAYLISTS,
-  RECEIVED_PLAYLISTS
+  RECEIVED_PLAYLISTS,
+  RECEIVED_CHANNELS
 } from '../actions/actions.js';
 
 const initialState = {
@@ -22,6 +23,12 @@ export function playlists(state = initialState, action) {
         ...state,
         isFetching: false,
         playlists: action.playlists,
+      };
+    case RECEIVED_CHANNELS:
+      return {
+        ...state,
+        isFetching: false,
+        channels: action.channels,
       };
     default:
       return state;

@@ -7,7 +7,6 @@ import {connect} from 'react-redux';
 class PlaylistsList extends React.Component {
   componentDidMount() {
     const {dispatch} = this.props;
-    console.log('fetchPlaylists');
     dispatch(fetchPlaylists());
   }
 
@@ -19,11 +18,14 @@ class PlaylistsList extends React.Component {
         {playlists && <ul>
           {playlists.map(playlist =>
             <li key={playlist.id}>
-              <Link to={endpoints.PATH_PLAYLISTS + playlist.id}>{playlist.title}</Link>
+              <Link to={endpoints.PATH_PLAYLISTS + playlist.id}>{playlist.title} ({playlist.count})</Link>
+              &nbsp;Public link:
+              <a href={playlist.public_link} target='_blank'>{playlist.public_link}</a>
             </li>
           )}
         </ul>}
-      </div>)
+      </div>
+    )
   }
 }
 
