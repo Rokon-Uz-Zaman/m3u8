@@ -15,6 +15,9 @@ class PlaylistSerializer(serializers.ModelSerializer):
 
 
 class ChannelSerializer(serializers.ModelSerializer):
+    def get_playlist(self, obj):
+        return obj.playlist.title
+
     class Meta:
         model = Channel
         fields = (
@@ -23,7 +26,8 @@ class ChannelSerializer(serializers.ModelSerializer):
             'duration',
             'group',
             'path',
-            'hidden'
+            'hidden',
+            'playlist'
         )
 
 
