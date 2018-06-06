@@ -31,7 +31,7 @@ class ChannelViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = super(ChannelViewSet, self).get_queryset()
-        qs = qs.filter(playlist__user=self.request.user).filter(playlist=self.kwargs['playlist_pk'])
+        qs = qs.filter(playlist__user=self.request.user)
         return qs
 
     def perform_create(self, serializer):
