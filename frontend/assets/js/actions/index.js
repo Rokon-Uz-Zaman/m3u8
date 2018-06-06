@@ -6,6 +6,8 @@ export const REQUEST_PLAYLIST = 'REQUEST_PLAYLIST';
 export const REQUEST_PLAYLISTS = 'REQUEST_PLAYLISTS';
 export const RECEIVED_CHANNELS = 'RECEIVED_CHANNELS';
 export const REQUEST_CHANNELS = 'REQUEST_CHANNELS';
+export const RECEIVED_CHANNEL = 'RECEIVED_CHANNEL';
+export const REQUEST_CHANNEL = 'REQUEST_CHANNEL';
 
 /* Function to include in each HTTP request */
 function checkStatus(response, dispatch) {
@@ -76,6 +78,31 @@ export function fetchPlaylist(id) {
   };
 }
 
+export function fetchChannel(id) {
+  return dispatch => {
+    dispatch(requestChannel());
+    return fetch(endpoints.API_CHANNELS + id + '/', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'same-origin'
+    })
+      .then(response => checkStatus(response, dispatch))
+      .then(response => {
+        if (!response) {
+          return;
+        }
+        return response.json()
+      })
+      .then(json => {
+        if (json) {
+          dispatch(receivedChannel(json))
+        }
+      });
+  };
+}
+
 export function fetchChannels(id) {
   return dispatch => {
     dispatch(requestChannels());
@@ -139,5 +166,18 @@ function receivedChannels(json) {
   return {
     type: RECEIVED_CHANNELS,
     channels: json
+  };
+}
+
+function requestChannel() {
+  return {
+    type: REQUEST_CHANNEL
+  };
+}
+
+function receivedChannel(json) {
+  return {
+    type: RECEIVED_CHANNEL,
+    channel: json
   };
 }

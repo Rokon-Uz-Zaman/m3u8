@@ -1,7 +1,8 @@
 import React from 'react';
 import * as endpoints from "../constants/endpoints";
-import {fetchChannels} from "../actions/actions";
+import {fetchChannels} from "../actions";
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 
 class ChannelList extends React.Component {
   componentDidMount() {
@@ -17,7 +18,7 @@ class ChannelList extends React.Component {
         {channels && <ul>
           {channels.map(channel =>
             <li key={channel.id}>
-              {channel.title}
+              <Link to={endpoints.PATH_CHANNELS + channel.id}>{channel.title}</Link>
             </li>
           )}
         </ul>}

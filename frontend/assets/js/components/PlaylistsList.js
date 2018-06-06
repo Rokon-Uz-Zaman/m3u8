@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import * as endpoints from "../constants/endpoints";
-import {fetchPlaylists} from "../actions/actions";
+import {fetchPlaylists} from "../actions";
 import {connect} from 'react-redux';
 
 class PlaylistsList extends React.Component {

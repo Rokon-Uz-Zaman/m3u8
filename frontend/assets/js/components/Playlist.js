@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import * as endpoints from "../constants/endpoints";
-import {fetchPlaylist} from "../actions/actions";
+import {fetchPlaylist} from "../actions";
 import {connect} from 'react-redux';
 import ChannelList from "./ChannelList";
 
