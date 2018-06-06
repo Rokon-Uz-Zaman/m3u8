@@ -51,6 +51,7 @@ class Channel extends React.Component {
     return (
       this.props.isFetching ? (<h4>Loading</h4>) :
         (<div>
+          <p>Playlist {this.state.channel.playlist}</p>
           <FormControl
             id="title"
             type="text"

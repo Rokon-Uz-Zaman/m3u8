@@ -14,7 +14,7 @@ class Root extends Component {
         return (
             <HashRouter>
                 <div className='container'>
-                    <h1>React!</h1>
+                    <h1>Video Playlist Editor</h1>
                     <Link to={endpoints.PATH_PLAYLISTS}>My Playlists</Link>
                     <Route exact path={endpoints.PATH_PLAYLISTS} component={PlaylistsList}/>
                     <Route exact path={endpoints.PATH_PLAYLISTS + ':id'} component={Playlist}/>

@@ -18,7 +18,9 @@ class ChannelList extends React.Component {
         {channels && <ul>
           {channels.map(channel =>
             <li key={channel.id}>
-              <Link to={endpoints.PATH_CHANNELS + channel.id}>{channel.title}</Link>
+              <Link to={endpoints.PATH_CHANNELS + channel.id}>
+                {channel.title} <strong>{channel.group}</strong>
+              </Link>
             </li>
           )}
         </ul>}
