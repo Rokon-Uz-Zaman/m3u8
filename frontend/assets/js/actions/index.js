@@ -8,6 +8,25 @@ export const RECEIVED_CHANNELS = 'RECEIVED_CHANNELS';
 export const REQUEST_CHANNELS = 'REQUEST_CHANNELS';
 export const RECEIVED_CHANNEL = 'RECEIVED_CHANNEL';
 export const REQUEST_CHANNEL = 'REQUEST_CHANNEL';
+export const REQUEST_CHANNEL_UPDATE = 'REQUEST_CHANNEL_UPDATE';
+
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    let cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      let cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+let csrftoken = getCookie('csrftoken');
 
 /* Function to include in each HTTP request */
 function checkStatus(response, dispatch) {
@@ -73,6 +92,33 @@ export function fetchPlaylist(id) {
       .then(json => {
         if (json) {
           dispatch(receivedPlaylist(json))
+        }
+      });
+  };
+}
+
+export function updateChannel(id, detail) {
+  return dispatch => {
+    dispatch({type: REQUEST_CHANNEL_UPDATE});
+    return fetch(endpoints.API_CHANNELS + id + '/', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(detail),
+      credentials: 'same-origin'
+    })
+      .then(response => checkStatus(response, dispatch))
+      .then(response => {
+        if (!response) {
+          return;
+        }
+        return response.json()
+      })
+      .then(json => {
+        if (json) {
+          dispatch(receivedChannel(json))
         }
       });
   };

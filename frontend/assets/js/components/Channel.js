@@ -2,29 +2,85 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import * as actions from "../actions";
 import {connect} from 'react-redux';
+import {Button, FormControl} from 'react-bootstrap';
 
 
 class Channel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: this.props.match.params.id
-    }
+      id: this.props.match.params.id,
+      channel: {}
+    };
+    this.onSave = this.onSave.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+        channel: {
+          ...this.state.channel,
+          [e.target.id]: e.target.value
+        }
+    });
+  }
+
+  onSave() {
+    this.props.dispatch(actions.updateChannel(this.state.id, this.state.channel));
   }
 
   componentDidMount() {
     this.props.dispatch(actions.fetchChannel(this.state.id));
   }
 
+  componentWillReceiveProps(nextProps) {
+    // If we receive Delete notification - redirect to home page immediately
+    if (nextProps.isDeleted) {
+      this.props.history.push(endpoints.REPORTER_HOME);
+      return;
+    }
+
+    this.setState({
+      channel: nextProps.channel,
+      id: nextProps.channel.id
+    });
+  }
+
   render() {
-    const {id} = this.props.match.params;
-    const channel = this.props.channel;
     return (
       this.props.isFetching ? (<h4>Loading</h4>) :
         (<div>
-          <h4>Title: <strong>{channel.title}</strong></h4>
-          <h4>Group: <strong>{channel.group}</strong></h4>
-          <p>{channel.path}</p>
+          <FormControl
+            id="title"
+            type="text"
+            value={this.state.channel.title || ''}
+            placeholder="Enter Title"
+            onChange={this.handleChange}
+          />
+
+          <FormControl
+            id="group"
+            type="text"
+            value={this.state.channel.group || ''}
+            placeholder="Enter Group Name"
+            onChange={this.handleChange}
+          />
+
+          <FormControl
+            id="path"
+            type="text"
+            value={this.state.channel.path || ''}
+            placeholder="Enter Path"
+            onChange={this.handleChange}
+          />
+
+          <Button
+            bsStyle="primary"
+            disabled={this.props.isFetching}
+            onClick={this.onSave}
+          >
+            Save
+          </Button>
         </div>)
     )
   }
