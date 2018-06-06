@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import * as actions from "../actions";
 import {connect} from 'react-redux';
 import {Button, FormControl} from 'react-bootstrap';
+import ReactHLS from 'react-hls';
 
 
 class Channel extends React.Component {
@@ -18,10 +19,10 @@ class Channel extends React.Component {
 
   handleChange(e) {
     this.setState({
-        channel: {
-          ...this.state.channel,
-          [e.target.id]: e.target.value
-        }
+      channel: {
+        ...this.state.channel,
+        [e.target.id]: e.target.value
+      }
     });
   }
 
@@ -81,6 +82,9 @@ class Channel extends React.Component {
           >
             Save
           </Button>
+
+          {this.state.channel.path && <ReactHLS url={this.state.channel.path}/>}
+
         </div>)
     )
   }
