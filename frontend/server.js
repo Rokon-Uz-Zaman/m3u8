@@ -3,6 +3,9 @@ var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.local.config');
 
 new WebpackDevServer(webpack(config), {
+  stats: {
+    colors: true
+  },
   disableHostCheck: true,
   headers: {"Access-Control-Allow-Origin": "*"},
   historyApiFallback: true,
