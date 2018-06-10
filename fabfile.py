@@ -29,11 +29,6 @@ def deploy():
         run('nginx -t')
         run('nginx -s reload')
 
-        # Deploy React frontend
-        with cd('%s/frontend' % BASE_PATH):
-            run('npm install')
-            run('npm run build')
-
         with virtualenv():
             run('pip install -U pip')
             run('pip install -U -r requirements.txt')
@@ -42,3 +37,16 @@ def deploy():
             run('python ./manage.py clearsessions --settings=playlist.production')
             run('cp supervisor.conf /etc/supervisor/conf.d/playlist.conf')
             run('supervisorctl restart playlist')
+
+
+def deploy_frontend():
+    with cd(BASE_PATH):
+        run('git pull')
+
+    # Deploy React frontend
+    with cd('%s/frontend' % BASE_PATH):
+        run('npm install')
+        run('npm run build')
+
+    with virtualenv():
+        run('python ./manage.py collectstatic --noinput --settings=playlist.production')
