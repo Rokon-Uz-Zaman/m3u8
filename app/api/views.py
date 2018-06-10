@@ -31,12 +31,15 @@ class ChannelViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = super(ChannelViewSet, self).get_queryset()
-        qs = qs.filter(playlist__user=self.request.user)
+        qs = qs.filter(user=self.request.user)
         return qs
 
     def perform_create(self, serializer):
         playlist = Playlist.objects.get(pk=self.kwargs['playlist_pk'])
-        serializer.save(playlist=playlist)
+        serializer.save(
+            playlist=playlist,
+            user=self.request.user
+        )
 
 
 class SubmittedPlaylistViewSet(CreateModelMixin, viewsets.GenericViewSet):
