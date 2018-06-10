@@ -29,6 +29,11 @@ def deploy():
         run('nginx -t')
         run('nginx -s reload')
 
+        # Deploy React frontend
+        with cd('%s/frontend' % BASE_PATH):
+            run('npm install')
+            run('npm run build')
+
         with virtualenv():
             run('pip install -U pip')
             run('pip install -U -r requirements.txt')
