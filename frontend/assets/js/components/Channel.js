@@ -12,10 +12,13 @@ class Channel extends React.Component {
     super(props);
     this.state = {
       id: this.props.match.params.id,
-      channel: {}
+      channel: {
+        playlists: []
+      }
     };
     this.onSave = this.onSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handlePlaylistsChange = this.handlePlaylistsChange.bind(this);
   }
 
   handleChange(e) {
@@ -23,6 +26,15 @@ class Channel extends React.Component {
       channel: {
         ...this.state.channel,
         [e.target.id]: e.target.value
+      }
+    });
+  }
+
+  handlePlaylistsChange(e) {
+    this.setState({
+      channel: {
+        ...this.state.channel,
+        playlists: [...e.target.options].filter(o => o.selected).map(o => o.value)
       }
     });
   }
@@ -35,25 +47,39 @@ class Channel extends React.Component {
     if (this.state.id !== 'new') {
       this.props.dispatch(actions.fetchChannel(this.state.id));
     }
+    if (this.props.playlists.length === 0) {
+      this.props.dispatch(actions.fetchPlaylists());
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.errors) {
-      this.setState({
-        channel: nextProps.channel,
-        id: nextProps.channel.id
-      });
-    }
+    this.setState({
+      channel: nextProps.channel,
+      id: nextProps.channel.id
+    });
   }
 
   render() {
     return (
       this.props.isFetching ? (<h4>Loading</h4>) :
         (<div>
-          <p>Playlist <Link to={endpoints.PATH_PLAYLISTS + this.props.channel.playlist}>
-            {this.state.channel.playlist}
-          </Link>
-          </p>
+          <FormGroup>
+            <ControlLabel>Channel Playlists</ControlLabel>
+            <FormControl
+              id="playlists"
+              componentClass="select"
+              value={this.state.channel.playlists || []}
+              multiple
+              onChange={this.handlePlaylistsChange}
+            >
+              {this.props.playlists.map(playlist =>
+                <option key={playlist.id} value={playlist.id}>
+                  {playlist.title}
+                </option>
+              )}
+            </FormControl>
+          </FormGroup>
+
           <FormGroup>
             <ControlLabel>Channel Title</ControlLabel>
             <FormControl
@@ -76,11 +102,7 @@ class Channel extends React.Component {
             />
           </FormGroup>
 
-          <FormGroup
-            validationState={() => {
-              if (this.props.errors.path) return 'error'
-            }}
-          >
+          <FormGroup>
             <ControlLabel>Channel Content Path</ControlLabel>
             <FormControl
               id="path"
