@@ -18,7 +18,7 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "build": "webpack --config webpack.local.config.js --progress --colors",
+    "build": "webpack --config webpack.server.config.js --progress --colors",
     "watch": "node server.js"
   },
   "devDependencies": {
