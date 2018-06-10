@@ -30,9 +30,10 @@ def deploy():
         run('nginx -s reload')
 
         with virtualenv():
+            run('pip install -U pip')
             run('pip install -U -r requirements.txt')
-            run('python ./manage.py migrate')
-            run('python ./manage.py collectstatic --noinput')
-            run('python ./manage.py clearsessions')
+            run('python ./manage.py migrate --settings=playlist.production')
+            run('python ./manage.py collectstatic --noinput --settings=playlist.production')
+            run('python ./manage.py clearsessions --settings=playlist.production')
             run('cp supervisor.conf /etc/supervisor/conf.d/playlist.conf')
             run('supervisorctl restart playlist')
