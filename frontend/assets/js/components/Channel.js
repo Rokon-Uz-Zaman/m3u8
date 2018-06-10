@@ -4,6 +4,7 @@ import * as actions from "../actions";
 import {connect} from 'react-redux';
 import {Button, FormControl, ControlLabel, FormGroup, HelpBlock} from 'react-bootstrap';
 import ReactHLS from 'react-hls';
+import * as endpoints from "../constants/endpoints";
 
 
 class Channel extends React.Component {
@@ -16,6 +17,7 @@ class Channel extends React.Component {
       }
     };
     this.onSave = this.onSave.bind(this);
+    this.onDelete = this.onDelete.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handlePlaylistsChange = this.handlePlaylistsChange.bind(this);
   }
@@ -42,6 +44,10 @@ class Channel extends React.Component {
     this.props.dispatch(actions.updateChannel(this.state.id, this.state.channel));
   }
 
+  onDelete() {
+    this.props.dispatch(actions.deleteChannel(this.state.id));
+  }
+
   componentDidMount() {
     if (this.state.id !== 'new') {
       this.props.dispatch(actions.fetchChannel(this.state.id));
@@ -52,6 +58,10 @@ class Channel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.isDeleted) {
+      this.props.history.push(endpoints.PATH_CHANNELS);
+      return;
+    }
     this.setState({
       channel: nextProps.channel,
       id: nextProps.channel.id
@@ -120,6 +130,13 @@ class Channel extends React.Component {
           >
             Save
           </Button>
+          <Button
+            bsStyle="danger"
+            disabled={this.props.isFetching}
+            onClick={this.onDelete}
+          >
+            Delete Channel
+          </Button>
 
           {this.state.channel.path && this.state.channel.path.startsWith('http') &&
           <ReactHLS url={this.state.channel.path}/>}
@@ -135,6 +152,7 @@ const mapStateToProps = (state) => {
     errors: state.playlists.errors,
     channel: state.playlists.channel,
     isFetching: state.playlists.isFetching,
+    isDeleted: state.playlists.isDeleted
   };
 };
 

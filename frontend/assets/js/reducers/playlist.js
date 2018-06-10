@@ -30,6 +30,7 @@ export function playlists(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
+        isDeleted: false,
         playlists: action.playlists,
       };
     case actions.RECEIVED_PLAYLIST:
@@ -43,6 +44,7 @@ export function playlists(state = initialState, action) {
       return {
         ...state,
         isFetching: true,
+        isDeleted: false,
         channels: []
       };
     case actions.RECEIVED_CHANNELS:
@@ -73,6 +75,18 @@ export function playlists(state = initialState, action) {
         isFetching: true
       };
     case actions.PLAYLIST_DELETED:
+      return {
+        ...state,
+        isFetching: false,
+        isDeleted: true,
+        playlists: []
+      };
+    case actions.REQUEST_CHANNEL_DELETE:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case actions.CHANNEL_DELETED:
       return {
         ...state,
         isFetching: false,
