@@ -10,6 +10,7 @@ export const RECEIVED_CHANNEL = 'RECEIVED_CHANNEL';
 export const REQUEST_CHANNEL = 'REQUEST_CHANNEL';
 export const REQUEST_CHANNEL_UPDATE = 'REQUEST_CHANNEL_UPDATE';
 export const RECEIVED_ERRORS = 'RECEIVED_ERRORS';
+export const REQUEST_PLAYLIST_UPDATE = 'REQUEST_PLAYLIST_UPDATE';
 
 
 function getCookie(name) {
@@ -68,7 +69,6 @@ export function fetchPlaylists() {
       });
   };
 }
-
 
 export function fetchPlaylist(id) {
   return dispatch => {
@@ -152,6 +152,42 @@ export function updateChannel(id, detail) {
       .then(json => {
         if (json) {
           dispatch(receivedChannel(json))
+        }
+      });
+  };
+}
+
+export function updatePlaylist(id, detail) {
+  let endpoint, method;
+  if (!id || id === 'new') {
+    endpoint = endpoints.API_PLAYLISTS;
+    method = 'POST';
+  } else {
+    endpoint = endpoints.API_PLAYLISTS + id + '/';
+    method = 'PUT';
+  }
+
+  return dispatch => {
+    dispatch({type: REQUEST_PLAYLIST_UPDATE});
+    return fetch(endpoint, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(detail),
+      credentials: 'same-origin'
+    })
+      .then(response => checkStatus(response, dispatch))
+      .then(response => {
+        if (!response) {
+          return;
+        }
+        return response.json()
+      })
+      .then(json => {
+        if (json) {
+          dispatch(receivedPlaylist(json))
         }
       });
   };

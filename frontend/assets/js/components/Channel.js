@@ -4,7 +4,6 @@ import * as actions from "../actions";
 import {connect} from 'react-redux';
 import {Button, FormControl, ControlLabel, FormGroup, HelpBlock} from 'react-bootstrap';
 import ReactHLS from 'react-hls';
-import * as endpoints from '../constants/endpoints';
 
 
 class Channel extends React.Component {

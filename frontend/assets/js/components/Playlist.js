@@ -3,19 +3,71 @@ import {Link} from 'react-router-dom';
 import {fetchPlaylist} from "../actions";
 import {connect} from 'react-redux';
 import PlaylistChannelsList from "./PlaylistChannelsList";
+import {FormGroup, ControlLabel, FormControl, HelpBlock, Button} from 'react-bootstrap';
+import * as actions from "../actions";
+
 
 class Playlist extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: this.props.match.params.id,
+      playlist: {}
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.onSave = this.onSave.bind(this);
+  };
+
+  onSave() {
+    this.props.dispatch(actions.updatePlaylist(this.state.id, this.state.playlist));
+  }
+
   componentDidMount() {
-    const id = this.props.match.params.id;
-    this.props.dispatch(fetchPlaylist(id));
+    if (this.state.id !== 'new') {
+      this.props.dispatch(fetchPlaylist(this.state.id));
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      playlist: {...nextProps.playlist},
+      id: nextProps.playlist.id
+    });
+  }
+
+  handleChange(e) {
+    this.setState({
+      playlist: {
+        ...this.state.playlist,
+        [e.target.id]: e.target.value
+      }
+    });
   }
 
   render() {
     const {id} = this.props.match.params;
     return (
       <div>
-        <h4>Playlist ID: {id}</h4>
-        <PlaylistChannelsList id={id}/>
+        <FormGroup>
+          <ControlLabel>Playlist Title</ControlLabel>
+          <FormControl
+            id='title'
+            type="text"
+            value={this.state.playlist.title || ''}
+            placeholder="Enter playlist title"
+            onChange={this.handleChange}
+          />
+          <FormControl.Feedback/>
+          <HelpBlock>{this.props.errors.title}</HelpBlock>
+          <Button
+            bsStyle="primary"
+            disabled={this.props.isFetching}
+            onClick={this.onSave}
+          >
+            Save
+          </Button>
+        </FormGroup>
+        {this.state.id !== 'new' && <PlaylistChannelsList id={this.state.id}/>}
       </div>
     )
   }
@@ -23,7 +75,9 @@ class Playlist extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    playlists: state.playlists.playlists,
+    playlist: state.playlists.playlist,
+    errors: state.playlists.errors,
+    isFetching: state.playlists.isFetching
   };
 };
 

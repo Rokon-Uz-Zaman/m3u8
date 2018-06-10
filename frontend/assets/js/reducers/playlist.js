@@ -4,6 +4,7 @@ import * as actions from '../actions';
 const initialState = {
   channel: {},
   channels: [],
+  playlist: {},
   playlists: [],
   isFetching: false,
   errors: {}
@@ -29,6 +30,12 @@ export function playlists(state = initialState, action) {
         isFetching: false,
         playlists: action.playlists,
       };
+    case actions.RECEIVED_PLAYLIST:
+      return {
+        ...state,
+        isFetching: false,
+        playlist: action.playlist,
+      };
     case actions.REQUEST_CHANNELS:
       return {
         ...state,
@@ -51,6 +58,11 @@ export function playlists(state = initialState, action) {
         ...state,
         isFetching: false,
         channel: {...action.channel},
+      };
+    case actions.REQUEST_PLAYLIST_UPDATE:
+      return {
+        ...state,
+        isFetching: true
       };
     default:
       return state;

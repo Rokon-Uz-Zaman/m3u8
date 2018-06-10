@@ -14,7 +14,9 @@ class PlaylistsList extends React.Component {
     const {playlists} = this.props;
     return (
       <div>
-        <h2>My Playlists</h2>
+        <h4>My Playlists</h4>
+        <Link to={endpoints.PATH_PLAYLISTS + 'new/'}>Add New Playlist</Link>
+
         {playlists && <ul>
           {playlists.map(playlist =>
             <li key={playlist.id}>

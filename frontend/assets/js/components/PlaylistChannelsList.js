@@ -12,7 +12,7 @@ class PlaylistChannelsList extends React.Component {
   render() {
     return (
       <div>
-        <h1>Playlist Channels {this.props.id}</h1>
+        <h3>Playlist Channels {this.props.id}</h3>
         <FilterableChannelsList channels={this.props.channels}/>
       </div>
     )
