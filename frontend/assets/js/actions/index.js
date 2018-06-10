@@ -11,7 +11,8 @@ export const REQUEST_CHANNEL = 'REQUEST_CHANNEL';
 export const REQUEST_CHANNEL_UPDATE = 'REQUEST_CHANNEL_UPDATE';
 export const RECEIVED_ERRORS = 'RECEIVED_ERRORS';
 export const REQUEST_PLAYLIST_UPDATE = 'REQUEST_PLAYLIST_UPDATE';
-
+export const REQUEST_PLAYLIST_DELETE = 'REQUEST_PLAYLIST_DELETE';
+export const PLAYLIST_DELETED = 'PLAYLIST_DELETED';
 
 function getCookie(name) {
   let cookieValue = null;
@@ -153,6 +154,28 @@ export function updateChannel(id, detail) {
         if (json) {
           dispatch(receivedChannel(json))
         }
+      });
+  };
+}
+
+
+export function deletePlaylist(id) {
+  return dispatch => {
+    dispatch(requestPlaylistDelete());
+    return fetch(endpoints.API_PLAYLISTS + id + '/', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      credentials: 'same-origin'
+    })
+      .then(response => checkStatus(response, dispatch))
+      .then(response => {
+        if (!response) {
+          return;
+        }
+        dispatch(deletedPlaylist());
       });
   };
 }
@@ -301,5 +324,17 @@ function receivedErrors(json) {
   return {
     type: RECEIVED_ERRORS,
     errors: json
+  };
+}
+
+function requestPlaylistDelete() {
+  return {
+    type: REQUEST_PLAYLIST_DELETE,
+  };
+}
+
+function deletedPlaylist() {
+  return {
+    type: PLAYLIST_DELETED,
   };
 }

@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import PlaylistChannelsList from "./PlaylistChannelsList";
 import {FormGroup, ControlLabel, FormControl, HelpBlock, Button} from 'react-bootstrap';
 import * as actions from "../actions";
+import * as endpoints from '../constants/endpoints';
 
 
 class Playlist extends React.Component {
@@ -16,10 +17,15 @@ class Playlist extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSave = this.onSave.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   };
 
   onSave() {
     this.props.dispatch(actions.updatePlaylist(this.state.id, this.state.playlist));
+  }
+
+  onDelete() {
+    this.props.dispatch(actions.deletePlaylist(this.state.id));
   }
 
   componentDidMount() {
@@ -29,6 +35,11 @@ class Playlist extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.isDeleted) {
+      this.props.history.push(endpoints.PATH_PLAYLISTS);
+      return;
+    }
+
     this.setState({
       playlist: {...nextProps.playlist},
       id: nextProps.playlist.id
@@ -66,6 +77,13 @@ class Playlist extends React.Component {
           >
             Save
           </Button>
+          <Button
+            bsStyle="danger"
+            disabled={this.props.isFetching}
+            onClick={this.onDelete}
+          >
+            Delete
+          </Button>
         </FormGroup>
         {this.state.id !== 'new' && <PlaylistChannelsList id={this.state.id}/>}
       </div>
@@ -77,7 +95,8 @@ const mapStateToProps = (state) => {
   return {
     playlist: state.playlists.playlist,
     errors: state.playlists.errors,
-    isFetching: state.playlists.isFetching
+    isFetching: state.playlists.isFetching,
+    isDeleted: state.playlists.isDeleted
   };
 };
 

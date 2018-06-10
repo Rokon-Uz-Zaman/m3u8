@@ -7,7 +7,8 @@ const initialState = {
   playlist: {},
   playlists: [],
   isFetching: false,
-  errors: {}
+  errors: {},
+  isDeleted: false
 };
 
 export function playlists(state = initialState, action) {
@@ -22,6 +23,7 @@ export function playlists(state = initialState, action) {
       return {
         ...state,
         isFetching: true,
+        isDeleted: false,
         playlists: [],
       };
     case actions.RECEIVED_PLAYLISTS:
@@ -34,6 +36,7 @@ export function playlists(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
+        isDeleted: false,
         playlist: action.playlist,
       };
     case actions.REQUEST_CHANNELS:
@@ -63,6 +66,17 @@ export function playlists(state = initialState, action) {
       return {
         ...state,
         isFetching: true
+      };
+    case actions.REQUEST_PLAYLIST_DELETE:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case actions.PLAYLIST_DELETED:
+      return {
+        ...state,
+        isFetching: false,
+        isDeleted: true
       };
     default:
       return state;
