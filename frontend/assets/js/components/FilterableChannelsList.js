@@ -36,7 +36,7 @@ export default class FilterableChannelsList extends React.Component {
         {channels && <ul>
           {channels
             .filter(channel => {
-              return channel.title.toLowerCase().indexOf(this.state.q.toLowerCase()) > -1 || channel.group.toLowerCase().indexOf(this.state.q.toLowerCase()) > -1
+              return channel.title.toLowerCase().indexOf(this.state.q.toLowerCase()) > -1 || (channel.group !== null && channel.group.toLowerCase().indexOf(this.state.q.toLowerCase()) > -1)
             })
             .map(channel =>
               <li key={channel.id}>
