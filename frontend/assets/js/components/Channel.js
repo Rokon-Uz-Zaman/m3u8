@@ -2,8 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import * as actions from "../actions";
 import {connect} from 'react-redux';
-import {Button, FormControl} from 'react-bootstrap';
+import {Button, FormControl, ControlLabel, FormGroup} from 'react-bootstrap';
 import ReactHLS from 'react-hls';
+import * as endpoints from '../constants/endpoints';
 
 
 class Channel extends React.Component {
@@ -51,30 +52,42 @@ class Channel extends React.Component {
     return (
       this.props.isFetching ? (<h4>Loading</h4>) :
         (<div>
-          <p>Playlist {this.state.channel.playlist}</p>
-          <FormControl
-            id="title"
-            type="text"
-            value={this.state.channel.title || ''}
-            placeholder="Enter Title"
-            onChange={this.handleChange}
-          />
+          <p>Playlist <Link to={endpoints.PATH_PLAYLISTS + this.props.channel.playlist}>
+              {this.state.channel.playlist}
+            </Link>
+          </p>
+          <FormGroup>
+            <ControlLabel>Channel Title</ControlLabel>
+            <FormControl
+              id="title"
+              type="text"
+              value={this.state.channel.title || ''}
+              placeholder="Enter Title"
+              onChange={this.handleChange}
+            />
+          </FormGroup>
 
-          <FormControl
-            id="group"
-            type="text"
-            value={this.state.channel.group || ''}
-            placeholder="Enter Group Name"
-            onChange={this.handleChange}
-          />
+          <FormGroup>
+            <ControlLabel>Channel Group</ControlLabel>
+            <FormControl
+              id="group"
+              type="text"
+              value={this.state.channel.group || ''}
+              placeholder="Enter Group Name"
+              onChange={this.handleChange}
+            />
+          </FormGroup>
 
-          <FormControl
-            id="path"
-            type="text"
-            value={this.state.channel.path || ''}
-            placeholder="Enter Path"
-            onChange={this.handleChange}
-          />
+          <FormGroup>
+            <ControlLabel>Channel Content Path</ControlLabel>
+            <FormControl
+              id="path"
+              type="text"
+              value={this.state.channel.path || ''}
+              placeholder="Enter Path"
+              onChange={this.handleChange}
+            />
+          </FormGroup>
 
           <Button
             bsStyle="primary"

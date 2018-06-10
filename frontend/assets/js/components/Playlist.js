@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {fetchPlaylist} from "../actions";
 import {connect} from 'react-redux';
-import ChannelList from "./ChannelList";
+import PlaylistChannelsList from "./PlaylistChannelsList";
 
 class Playlist extends React.Component {
   componentDidMount() {
@@ -15,7 +15,7 @@ class Playlist extends React.Component {
     return (
       <div>
         <h4>Playlist ID: {id}</h4>
-        <ChannelList id={id}/>
+        <PlaylistChannelsList id={id}/>
       </div>
     )
   }

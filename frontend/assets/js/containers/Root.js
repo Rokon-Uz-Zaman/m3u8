@@ -7,6 +7,7 @@ import PlaylistsList from "../components/PlaylistsList";
 import Playlist from "../components/Playlist";
 import Link from "react-router-dom/es/Link";
 import Channel from "../components/Channel";
+import ChannelsList from "../components/ChannelsList";
 
 
 class Root extends Component {
@@ -15,9 +16,11 @@ class Root extends Component {
             <HashRouter>
                 <div className='container'>
                     <h1>Video Playlist Editor</h1>
-                    <Link to={endpoints.PATH_PLAYLISTS}>My Playlists</Link>
+                    <Link to={endpoints.PATH_PLAYLISTS}>Playlists</Link>
+                    <Link to={endpoints.PATH_CHANNELS}>Channels</Link>
                     <Route exact path={endpoints.PATH_PLAYLISTS} component={PlaylistsList}/>
                     <Route exact path={endpoints.PATH_PLAYLISTS + ':id'} component={Playlist}/>
+                    <Route exact path={endpoints.PATH_CHANNELS} component={ChannelsList}/>
                     <Route exact path={endpoints.PATH_CHANNELS + ':id'} component={Channel}/>
                 </div>
             </HashRouter>

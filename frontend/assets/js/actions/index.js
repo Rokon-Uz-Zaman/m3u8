@@ -97,6 +97,31 @@ export function fetchPlaylist(id) {
   };
 }
 
+export function fetchAllChannels() {
+  return dispatch => {
+    dispatch(requestChannels());
+    return fetch(endpoints.API_CHANNELS, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'same-origin'
+    })
+      .then(response => checkStatus(response, dispatch))
+      .then(response => {
+        if (!response) {
+          return;
+        }
+        return response.json()
+      })
+      .then(json => {
+        if (json) {
+          dispatch(receivedChannels(json))
+        }
+      });
+  };
+}
+
 export function updateChannel(id, detail) {
   return dispatch => {
     dispatch({type: REQUEST_CHANNEL_UPDATE});
