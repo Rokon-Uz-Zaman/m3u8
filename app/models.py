@@ -45,6 +45,7 @@ class Channel(models.Model):
     extra_data = models.TextField(null=True, blank=True)
     path = models.TextField(_('Path to content'))
     hidden = models.BooleanField(_('Hide from public playlist'), default=False)
+    playlists = models.ManyToManyField(Playlist, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

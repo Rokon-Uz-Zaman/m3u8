@@ -2,6 +2,7 @@ import logging
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
@@ -19,10 +20,8 @@ class PublicPlaylistView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PublicPlaylistView, self).get_context_data(**kwargs)
-        context['channels'] = Channel.objects.filter(
-            playlist__public_key=kwargs.get('public_key'),
-            hidden=False
-        )
+        playlist = get_object_or_404(Playlist, public_key=kwargs.get('public_key'))
+        context['channels'] = playlist.channel_set.filter(hidden=False)
         return context
 
     def dispatch(self, *args, **kwargs):
@@ -42,6 +41,9 @@ class ChannelCreate(CreateView):
             playlist = Playlist.objects.create(user=self.request.user)
         form.instance.playlist = playlist
         form.instance.user = self.request.user
+        form.instance.save()
+
+        form.instance.playlists.add(playlist)
         return super(ChannelCreate, self).form_valid(form)
 
 
@@ -51,7 +53,7 @@ class ChannelUpdate(UpdateView):
     form_class = ChannelUpdateForm
 
     def get_queryset(self):
-        qs = super(ChannelUpdate, self).get_queryset().filter(playlist__user=self.request.user)
+        qs = super(ChannelUpdate, self).get_queryset().filter(user=self.request.user)
         return qs
 
 
@@ -61,7 +63,7 @@ class ChannelList(ListView):
     paginate_by = 50
 
     def get_queryset(self):
-        qs = super(ChannelList, self).get_queryset().filter(playlist__user=self.request.user)
+        qs = super(ChannelList, self).get_queryset().filter(user=self.request.user)
         group = self.request.GET.get('group')
         if group:
             qs = qs.filter(group=group)
@@ -77,7 +79,6 @@ class ChannelList(ListView):
         return qs
 
     def get_context_data(self, *, object_list=None, **kwargs):
-
         context = super(ChannelList, self).get_context_data(**kwargs)
         playlist = Playlist.objects.filter(user=self.request.user).first()
         if not playlist:
@@ -99,7 +100,6 @@ class CreatePlaylist(CreateView):
         if not playlist:
             playlist = Playlist.objects.create(user=self.request.user)
 
-        form.instance.playlist = playlist
         form.instance.user = self.request.user
 
         if form.cleaned_data['url']:
