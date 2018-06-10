@@ -37,6 +37,7 @@ class Playlist(models.Model):
 
 
 class Channel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name='channels')
     title = models.CharField(max_length=255, default='')
     duration = models.CharField(default='0', max_length=255)
