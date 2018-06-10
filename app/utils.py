@@ -43,7 +43,7 @@ def load_remote_m3u8(link, playlist, remove_existed=False):
         return False
 
     if remove_existed:
-        playlist.channels.all().delete()
+        Channel.objects.filter(playlists=playlist).delete()
 
     channel = None
     group = None
@@ -74,7 +74,6 @@ def load_remote_m3u8(link, playlist, remove_existed=False):
 
             channel = Channel.objects.create(
                 user=playlist.user,
-                playlist=playlist,
                 title=channel.title,
                 duration=channel.duration,
                 group=group,
@@ -91,7 +90,7 @@ def load_m3u8_from_file(fo, playlist, remove_existed=False):
     from app.models import Channel
 
     if remove_existed:
-        playlist.channels.all().delete()
+        Channel.objects.filter(playlists=playlist).delete()
 
     channel = None
     group = None
@@ -122,7 +121,6 @@ def load_m3u8_from_file(fo, playlist, remove_existed=False):
 
             channel = Channel.objects.create(
                 user=playlist.user,
-                playlist=playlist,
                 title=channel.title,
                 duration=channel.duration,
                 group=group,

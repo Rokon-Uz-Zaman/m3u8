@@ -33,12 +33,11 @@ class Playlist(models.Model):
 
     @cached_property
     def count(self):
-        return self.channels.all().count()
+        return self.channel_set.all().count()
 
 
 class Channel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name='channels')
     title = models.CharField(max_length=255, default='')
     duration = models.CharField(default='0', max_length=255)
     group = models.CharField(max_length=255, null=True, blank=True)
@@ -94,7 +93,6 @@ class Channel(models.Model):
 
 class SubmittedPlaylist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name='uploads')
 
     file = models.FileField(upload_to='playlists', null=True, blank=True, validators=[FileExtensionValidator(['m3u8', 'm3u'])])
     url = models.URLField(null=True, blank=True)

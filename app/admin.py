@@ -6,9 +6,9 @@ from app.models import Channel, Playlist, SubmittedPlaylist
 
 
 class ChannelAdmin(admin.ModelAdmin):
-    list_display = ['title', 'duration', 'group', 'playlist', 'user', 'created_at']
+    list_display = ['title', 'duration', 'group', 'user', 'created_at']
     search_fields = ['title', 'group', 'path']
-    list_filter = ['created_at', 'playlist', ]
+    list_filter = ['created_at', ]
     ordering = ['-created_at']
 
 
