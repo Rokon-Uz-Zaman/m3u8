@@ -73,6 +73,7 @@ def load_remote_m3u8(link, playlist, remove_existed=False):
             path = line
 
             Channel.objects.create(
+                user=playlist.user,
                 playlist=playlist,
                 title=channel.title,
                 duration=channel.duration,
@@ -119,6 +120,7 @@ def load_m3u8_from_file(fo, playlist, remove_existed=False):
             path = line
 
             Channel.objects.create(
+                user=playlist.user,
                 playlist=playlist,
                 title=channel.title,
                 duration=channel.duration,
