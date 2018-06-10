@@ -6,16 +6,14 @@ import FilterableChannelsList from "./FilterableChannelsList";
 
 class PlaylistChannelsList extends React.Component {
   componentDidMount() {
-    const {dispatch} = this.props;
-    dispatch(fetchChannels(this.props.id));
+    this.props.dispatch(fetchChannels(this.props.id));
   }
 
   render() {
-    const {channels} = this.props;
     return (
       <div>
-        <h1>Playlist Channels</h1>
-        <FilterableChannelsList channels={channels}/>
+        <h1>Playlist Channels {this.props.id}</h1>
+        <FilterableChannelsList channels={this.props.channels}/>
       </div>
     )
   }

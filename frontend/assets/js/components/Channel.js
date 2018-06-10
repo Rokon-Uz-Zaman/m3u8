@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import * as actions from "../actions";
 import {connect} from 'react-redux';
-import {Button, FormControl, ControlLabel, FormGroup} from 'react-bootstrap';
+import {Button, FormControl, ControlLabel, FormGroup, HelpBlock} from 'react-bootstrap';
 import ReactHLS from 'react-hls';
 import * as endpoints from '../constants/endpoints';
 
@@ -32,20 +32,18 @@ class Channel extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(actions.fetchChannel(this.state.id));
+    if (this.state.id !== 'new') {
+      this.props.dispatch(actions.fetchChannel(this.state.id));
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    // If we receive Delete notification - redirect to home page immediately
-    if (nextProps.isDeleted) {
-      this.props.history.push(endpoints.REPORTER_HOME);
-      return;
+    if (!nextProps.errors) {
+      this.setState({
+        channel: nextProps.channel,
+        id: nextProps.channel.id
+      });
     }
-
-    this.setState({
-      channel: nextProps.channel,
-      id: nextProps.channel.id
-    });
   }
 
   render() {
@@ -53,8 +51,8 @@ class Channel extends React.Component {
       this.props.isFetching ? (<h4>Loading</h4>) :
         (<div>
           <p>Playlist <Link to={endpoints.PATH_PLAYLISTS + this.props.channel.playlist}>
-              {this.state.channel.playlist}
-            </Link>
+            {this.state.channel.playlist}
+          </Link>
           </p>
           <FormGroup>
             <ControlLabel>Channel Title</ControlLabel>
@@ -78,7 +76,11 @@ class Channel extends React.Component {
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup
+            validationState={() => {
+              if (this.props.errors.path) return 'error'
+            }}
+          >
             <ControlLabel>Channel Content Path</ControlLabel>
             <FormControl
               id="path"
@@ -87,6 +89,7 @@ class Channel extends React.Component {
               placeholder="Enter Path"
               onChange={this.handleChange}
             />
+            {this.props.errors.path && <HelpBlock>{this.props.errors.path}</HelpBlock>}
           </FormGroup>
 
           <Button
@@ -97,7 +100,8 @@ class Channel extends React.Component {
             Save
           </Button>
 
-          {this.state.channel.path && <ReactHLS url={this.state.channel.path}/>}
+          {this.state.channel.path && this.state.channel.path.startsWith('http') &&
+          <ReactHLS url={this.state.channel.path}/>}
 
         </div>)
     )
@@ -106,6 +110,8 @@ class Channel extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    playlists: state.playlists.playlists,
+    errors: state.playlists.errors,
     channel: state.playlists.channel,
     isFetching: state.playlists.isFetching,
   };

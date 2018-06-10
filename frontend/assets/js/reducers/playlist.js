@@ -5,11 +5,18 @@ const initialState = {
   channel: {},
   channels: [],
   playlists: [],
-  isFetching: false
+  isFetching: false,
+  errors: {}
 };
 
 export function playlists(state = initialState, action) {
   switch (action.type) {
+    case actions.RECEIVED_ERRORS:
+      return {
+        ...state,
+        errors: action.errors,
+        isFetching: false
+      };
     case actions.REQUEST_PLAYLISTS:
       return {
         ...state,
@@ -25,7 +32,8 @@ export function playlists(state = initialState, action) {
     case actions.REQUEST_CHANNELS:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        channels: []
       };
     case actions.RECEIVED_CHANNELS:
       return {

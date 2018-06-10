@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import FilterableChannelsList from "./FilterableChannelsList";
 import {fetchAllChannels} from '../actions';
+import * as endpoints from '../constants/endpoints';
 
 class ChannelsList extends React.Component {
   componentDidMount() {
@@ -13,6 +14,9 @@ class ChannelsList extends React.Component {
     return (
       <div>
         <h4>All Channels List</h4>
+        <p>
+          <Link to={endpoints.PATH_CHANNELS + 'new'}>Add new Channel</Link>
+        </p>
         <FilterableChannelsList channels={this.props.channels} />
       </div>
     )

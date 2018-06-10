@@ -9,6 +9,7 @@ export const REQUEST_CHANNELS = 'REQUEST_CHANNELS';
 export const RECEIVED_CHANNEL = 'RECEIVED_CHANNEL';
 export const REQUEST_CHANNEL = 'REQUEST_CHANNEL';
 export const REQUEST_CHANNEL_UPDATE = 'REQUEST_CHANNEL_UPDATE';
+export const RECEIVED_ERRORS = 'RECEIVED_ERRORS';
 
 
 function getCookie(name) {
@@ -34,14 +35,11 @@ function checkStatus(response, dispatch) {
     // Clear error dictionary
     return response;
   } else {
-    // TODO Check if response status === 400 - populate error dict
+    // Check if response status === 400 - populate error dict
     if (response.status === 400) {
-      console.log('Error response');
-      // TODO set response status and alerts
-      // response.json().then(json => dispatch(receivedErrors(json)));
+      response.json().then(json => dispatch(receivedErrors(json)));
     } else {
-      console.log('Network Error response');
-      //dispatch(receivedNetworkError(response.statusText));
+      console.log('receivedNetworkError', response);
     }
   }
 }
@@ -123,10 +121,20 @@ export function fetchAllChannels() {
 }
 
 export function updateChannel(id, detail) {
+
+  let endpoint, method;
+  if (!id || id === 'new') {
+    endpoint = endpoints.API_CHANNELS;
+    method = 'POST';
+  } else {
+    endpoint = endpoints.API_CHANNELS + id + '/';
+    method = 'PUT';
+  }
+
   return dispatch => {
     dispatch({type: REQUEST_CHANNEL_UPDATE});
-    return fetch(endpoints.API_CHANNELS + id + '/', {
-      method: 'PUT',
+    return fetch(endpoint, {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
         'X-CSRFToken': csrftoken
@@ -250,5 +258,12 @@ function receivedChannel(json) {
   return {
     type: RECEIVED_CHANNEL,
     channel: json
+  };
+}
+
+function receivedErrors(json) {
+  return {
+    type: RECEIVED_ERRORS,
+    errors: json
   };
 }
