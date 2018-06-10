@@ -41,6 +41,7 @@ class ChannelCreate(CreateView):
         if not playlist:
             playlist = Playlist.objects.create(user=self.request.user)
         form.instance.playlist = playlist
+        form.instance.user = self.request.user
         return super(ChannelCreate, self).form_valid(form)
 
 
