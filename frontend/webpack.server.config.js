@@ -18,7 +18,9 @@ config.plugins = config.plugins.concat([
       NODE_ENV: JSON.stringify("production")
     }
   }),
-  new webpack.optimize.UglifyJsPlugin()
+  new webpack.optimize.UglifyJsPlugin({
+    minimize: true
+    })
 ]);
 
 config.devtool = 'eval';
