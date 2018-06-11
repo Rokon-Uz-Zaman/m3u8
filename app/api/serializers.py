@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app.models import Playlist, Channel, SubmittedPlaylist
+from app.models import Playlist, Channel
 
 
 class PlaylistSerializer(serializers.ModelSerializer):
