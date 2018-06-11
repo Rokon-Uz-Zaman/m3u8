@@ -9,9 +9,6 @@ config.entry = [
   './assets/js/index'
 ];
 
-// override django's STATIC_URL for webpack bundles
-config.output.publicPath = 'http://localhost:4000/assets/bundles/';
-
 config.plugins = config.plugins.concat([
   new webpack.NoEmitOnErrorsPlugin(),
   new webpack.NamedModulesPlugin(),
