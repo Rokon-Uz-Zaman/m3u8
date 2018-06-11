@@ -19,21 +19,22 @@ config.plugins = config.plugins.concat([
     }
   }),
   new webpack.optimize.UglifyJsPlugin({
-    minimize: true
-    })
+    minimize: true,
+    compress: true
+  })
 ]);
 
 config.devtool = 'eval';
 
 // Add a loader for JSX files with react-hot enabled
 config.module.loaders.push(
-    {
-      test: /\.js?$/,
-      exclude: /node_modules/,
-      loaders: [
-        'babel-loader?presets[]=es2015,presets[]=stage-0,presets[]=react'
-      ],
-    }
+  {
+    test: /\.js?$/,
+    exclude: /node_modules/,
+    loaders: [
+      'babel-loader?presets[]=es2015,presets[]=stage-0,presets[]=react'
+    ],
+  }
 );
 
 module.exports = config;
