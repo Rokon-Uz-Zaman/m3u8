@@ -10,15 +10,18 @@ class ChannelAdmin(admin.ModelAdmin):
     search_fields = ['title', 'group', 'path']
     list_filter = ['created_at', ]
     ordering = ['-created_at']
+    raw_id_fields = ['user', 'playlists']
 
 
 class PlaylistAdmin(admin.ModelAdmin):
     readonly_fields = ['created_at', 'public_key', 'public_link', ]
     list_display = ['user', 'count', 'created_at']
+    raw_id_fields = ['user', ]
 
 
 class SubmittedPlaylistAdmin(admin.ModelAdmin):
     list_display = ['user', 'url', 'created_at']
+    raw_id_fields = ['user', ]
 
 
 class EnhancedUserAdmin(UserAdmin):
