@@ -26,13 +26,3 @@ class ChannelSerializer(serializers.ModelSerializer):
             'hidden',
             'playlists'
         )
-
-
-class SubmittedPlaylistSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SubmittedPlaylist
-        fields = (
-            'url',
-            'file',
-            'remove_existed'
-        )

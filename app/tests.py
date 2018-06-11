@@ -41,12 +41,13 @@ class AppTestCase(TestCase):
         self.playlist.save()
 
         self.channel = Channel.objects.create(
-            playlist=self.playlist,
+            user=self.user,
             title='Testing Playlist',
             duration='150',
             group='The best group',
             path='no path'
         )
+        self.channel.playlists.add(self.playlist)
 
         self.sample_m3u8 = '\n'.join([
             '#EXTM3U',
