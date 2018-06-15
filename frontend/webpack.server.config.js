@@ -9,6 +9,8 @@ config.entry = [
   './assets/js/index'
 ];
 
+config.output.publicPath = '[name].[hash].js';
+
 config.plugins = config.plugins.concat([
   new webpack.NoEmitOnErrorsPlugin(),
   new webpack.NamedModulesPlugin(),
