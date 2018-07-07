@@ -27,3 +27,7 @@ before_script:
 script:
   - coverage run ./manage.py test
   - coveralls
+
+matrix:
+    allow_failures:
+        - env: DJANGO="2.1b1"
