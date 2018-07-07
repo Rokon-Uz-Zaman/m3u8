@@ -3,7 +3,6 @@ language: python
 python:
   - "3.6"
   - "3.7-dev"
-  - "3.8-dev"
 
 env:
   - DJANGO="2.0.7"
@@ -33,4 +32,3 @@ matrix:
     allow_failures:
         - env: DJANGO="2.1b1"
         - python: "3.7-dev"
-        - python: "3.8-dev"
